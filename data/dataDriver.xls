@@ -1,0 +1,7 @@
+测试用例序号	测试步骤序号	打开步骤描述	关键字	操作值
+baidu01	testStep01	打开浏览器	open_browser	chrome
+baidu01	testStep02	"访问网址
+www.baidu.com"	navigate	www.baidu.com
+baidu01	testStep03	输入关键字	input_keyWord	haha
+baidu01	testStep04	点击搜索按钮	click_search	无
+baidu01	testStep05	等待	waitfor_element	homepage_baidushouye
