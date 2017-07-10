@@ -23,7 +23,6 @@ class TestBaiduByExcel(unittest.TestCase):
             keyWord = ExcelUtil.ExcelUtil.getCellData(i,Constants.Constants.Col_KeyWordAction)
             value = ExcelUtil.ExcelUtil.getCellData(i,Constants.Constants.Col_ActionValue)
 
-
             if hasattr(KeyWordsAction.KeyWordsAction,str(keyWord)):
                 func = getattr(KeyWordsAction.KeyWordsAction,str(keyWord))
                 if(str(keyWord).startswith("assert")):

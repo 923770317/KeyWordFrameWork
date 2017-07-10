@@ -15,6 +15,6 @@ class Constants():
     #测试用例sheet名称
     Sheet_TestSteps = "baidu_search"
     #测试用例集Sheet的常量设定
-    Sheet_TestSuite = "测试用例集合"
+    Sheet_TestSuite = "testsuite"
 
 
