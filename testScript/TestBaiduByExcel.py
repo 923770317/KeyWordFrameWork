@@ -22,11 +22,17 @@ class TestBaiduByExcel(unittest.TestCase):
         for i in range(1,ExcelUtil.ExcelUtil.getLastRowNum()):
             keyWord = ExcelUtil.ExcelUtil.getCellData(i,Constants.Constants.Col_KeyWordAction)
             value = ExcelUtil.ExcelUtil.getCellData(i,Constants.Constants.Col_ActionValue)
+
+
             if hasattr(KeyWordsAction.KeyWordsAction,str(keyWord)):
                 func = getattr(KeyWordsAction.KeyWordsAction,str(keyWord))
-                func(value)
+                if(str(keyWord).startswith("assert")):
+                    func(self,value)
+                else:
+                    func(value)
             else:
                 print '没有找到相应的方法'
+
 
 
 

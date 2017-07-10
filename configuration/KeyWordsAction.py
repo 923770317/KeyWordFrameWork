@@ -1,10 +1,12 @@
 #-*- coding: utf-8 -*-
 from selenium import webdriver
-import unittest
+import time
 import sys
 sys.path.append("\util")
 from util import Constants
 from util import ObjectMap
+from unittest import TestCase
+
 
 
 
@@ -59,9 +61,18 @@ class KeyWordsAction():
             print str(e)
 
     @staticmethod
-    def assert_string(assertString):
+    def assertIn(testcase,assertString):
         try:
+            testcase.assertTrue(assertString in KeyWordsAction.driver.page_source)
+        except AssertionError ,msg:
+            print msg
 
+    @staticmethod
+    def sleep(second):
+        try:
+            time.sleep(second)
+        except Exception,e:
+            print str(e)
 
 
     @staticmethod
