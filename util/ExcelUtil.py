@@ -1,9 +1,10 @@
- #-*- coding: utf-8 -*-
+#-*- coding: utf-8 -*-
 import Constants
 import xlrd
 import xlwt
 from xlutils.copy import copy
 
+print 'import ExcelUtil'
 
 class ExcelUtil():
     excelSheet = None
@@ -22,8 +23,9 @@ class ExcelUtil():
 
 
     @staticmethod
-    def getCellData(rowNum,colNum):
+    def getCellData(sheetName,rowNum,colNum):
         try:
+            ExcelUtil.excelBook = ExcelUtil.excelSheet.sheet_by_name(sheetName)
             cellData = ExcelUtil.excelBook.cell(rowNum,colNum).value
             return cellData
         except Exception,e:
@@ -31,8 +33,9 @@ class ExcelUtil():
 
 
     @staticmethod
-    def getLastRowNum():
+    def getLastRowNum(sheetName):
         try:
+            ExcelUtil.excelBook = ExcelUtil.excelSheet.sheet_by_name(sheetName)
             return ExcelUtil.excelBook.nrows
         except Exception,e:
             print str(e)
@@ -84,24 +87,26 @@ class ExcelUtil():
             return True
 
 
-    #获取指定sheet 中的总行数
+
     @staticmethod
     def getRowCount(sheetName):
         try:
-            number = ExcelUtil.getLastRowNum()
+            ExcelUtil.excelBook = ExcelUtil.excelSheet.sheet_by_name(sheetName)
+            number = ExcelUtil.getLastRowNum(sheetName)
             return number
         except Exception,e:
             print str(e)
 
 
-    #在指定sheet中，获取第一次包含指定测试用例序号文字的行号
+
     @staticmethod
-    def getFirstRowContainsTestCaseId(sheentName,testCaseName,colNum):
+    def getFirstRowContainsTestCaseId(sheetName,testCaseName,colNum):
         try:
+            ExcelUtil.excelBook = ExcelUtil.excelSheet.sheet_by_name(sheetName)
             flag = False
-            rowNum = ExcelUtil.getRowCount(sheentName)
+            rowNum = ExcelUtil.getRowCount(sheetName)
             for i in range(1,rowNum):
-                if str(ExcelUtil.getCellData(i,colNum)).lower() == testCaseName:
+                if str(ExcelUtil.getCellData(sheetName,i,colNum)).lower() == testCaseName:
                     flag = True
                     return i
             if(flag == False):
@@ -110,15 +115,15 @@ class ExcelUtil():
             print str(e)
 
 
-    #获取指定Sheet中某个测试用例步骤的个数
+
     @staticmethod
     def getTestCaseLastStepRow(sheetName,testCaseId,testCaseStartRowNum):
         try:
+            ExcelUtil.excelBook = ExcelUtil.excelSheet.sheet_by_name(sheetName)
             rowNum = ExcelUtil.getRowCount(sheetName)
             for i in range(testCaseStartRowNum,rowNum):
-                if not str(ExcelUtil.getCellData(i,Constants.Constants.Col_TestCaseID)).lower() == testCaseId :
+                if not str(ExcelUtil.getCellData(sheetName,i,Constants.Constants.Col_TestCaseID)).lower() == testCaseId :
                     return i
-            #如果是 最后一行结束
             return rowNum + 1
         except Exception,e:
             print str(e)

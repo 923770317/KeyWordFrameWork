@@ -14,20 +14,20 @@ class TestSuiteByExcel(unittest.TestCase):
     value = ''
 
     def setUp(self):
-        ExcelUtil.ExcelUtil.setExcelFile(Constants.Constants.path_excelFile,Constants.Constants.Sheet_TestSteps)
+        ExcelUtil.ExcelUtil.setExcelFile(Constants.Constants.path_excelFile,Constants.Constants.Sheet_TestSuite)
 
     def test_suiteByExcel(self):
         try:
             testCaseCount = ExcelUtil.ExcelUtil.getRowCount(Constants.Constants.Sheet_TestSuite)
             for i in range(1,testCaseCount):
-                testCaseId = ExcelUtil.ExcelUtil.getCellData(i,Constants.Constants.Col_TestCaseID)
-                testCaseRunFlag = ExcelUtil.ExcelUtil.getCellData(i,Constants.Constants.Col_RunFlag)
+                testCaseId = ExcelUtil.ExcelUtil.getCellData(Constants.Constants.Sheet_TestSuite,i,Constants.Constants.Col_TestCaseID)
+                testCaseRunFlag = ExcelUtil.ExcelUtil.getCellData(Constants.Constants.Sheet_TestSuite,i,Constants.Constants.Col_RunFlag)
                 if str(testCaseRunFlag).lower() == "y":
                     testStep = ExcelUtil.ExcelUtil.getFirstRowContainsTestCaseId(Constants.Constants.Sheet_TestSteps,testCaseId,Constants.Constants.Col_TestCaseID)
                     testLastStep = ExcelUtil.ExcelUtil.getTestCaseLastStepRow(Constants.Constants.Sheet_TestSteps,testCaseId,testStep)
-                    for j in range(testStep - 1,testLastStep):
-                         keyWord = ExcelUtil.ExcelUtil.getCellData(j,Constants.Constants.Col_KeyWordAction)
-                         value = ExcelUtil.ExcelUtil.getCellData(j,Constants.Constants.Col_ActionValue)
+                    for j in range(testStep,testLastStep):
+                         keyWord = ExcelUtil.ExcelUtil.getCellData(Constants.Constants.Sheet_TestSteps,j,Constants.Constants.Col_KeyWordAction)
+                         value = ExcelUtil.ExcelUtil.getCellData(Constants.Constants.Sheet_TestSteps,j,Constants.Constants.Col_ActionValue)
                          if hasattr(KeyWordsAction.KeyWordsAction,str(keyWord)):
                             func = getattr(KeyWordsAction.KeyWordsAction,str(keyWord))
                             if(str(keyWord).startswith("assert")):

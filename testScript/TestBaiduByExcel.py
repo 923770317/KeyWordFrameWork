@@ -20,8 +20,8 @@ class TestBaiduByExcel(unittest.TestCase):
 
     def test_baiduByExcel(self):
         for i in range(1,ExcelUtil.ExcelUtil.getLastRowNum()):
-            keyWord = ExcelUtil.ExcelUtil.getCellData(i,Constants.Constants.Col_KeyWordAction)
-            value = ExcelUtil.ExcelUtil.getCellData(i,Constants.Constants.Col_ActionValue)
+            keyWord = ExcelUtil.ExcelUtil.getCellData(Constants.Constants.Sheet_TestSteps,i,Constants.Constants.Col_KeyWordAction)
+            value = ExcelUtil.ExcelUtil.getCellData(Constants.Constants.Sheet_TestSteps,i,Constants.Constants.Col_ActionValue)
 
             if hasattr(KeyWordsAction.KeyWordsAction,str(keyWord)):
                 func = getattr(KeyWordsAction.KeyWordsAction,str(keyWord))
@@ -31,9 +31,6 @@ class TestBaiduByExcel(unittest.TestCase):
                     func(value)
             else:
                 print '没有找到相应的方法'
-
-
-
 
 if __name__ =="__main__":
     unittest.main()

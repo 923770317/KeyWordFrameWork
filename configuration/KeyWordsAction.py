@@ -5,10 +5,10 @@ import sys
 sys.path.append("\util")
 from util import Constants
 from util import ObjectMap
-from unittest import TestCase
 
 
 
+print 'import KeyWord'
 
 class KeyWordsAction():
     objectMap = ObjectMap.ObjcetMap(Constants.Constants.path_configurationFile)
