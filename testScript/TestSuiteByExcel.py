@@ -4,10 +4,10 @@ import unittest
 import sys
 sys.path.append("\util")
 sys.path.append("\configuration")
-from util import Constants
-from util import ExcelUtil
-from util import Log
-from configuration import KeyWordsAction
+from util.Constants import Constants
+from util.ExcelUtil import ExcelUtil
+from util.Log import Log
+from configuration.KeyWordsAction import KeyWordsAction
 import logging
 import logging.config
 
@@ -23,36 +23,47 @@ class TestSuiteByExcel(unittest.TestCase):
 
     keyWord = ''
     value = ''
+    testResult = None
 
     def setUp(self):
-        ExcelUtil.ExcelUtil.setExcelFile(Constants.Constants.path_excelFile,Constants.Constants.Sheet_TestSuite)
+        ExcelUtil.setExcelFile(Constants.path_excelFile,Constants.Sheet_TestSuite)
         logging.config.fileConfig("../log.conf")
 
 
     def test_suiteByExcel(self):
         try:
-            testCaseCount = ExcelUtil.ExcelUtil.getRowCount(Constants.Constants.Sheet_TestSuite)
+            testCaseCount = ExcelUtil.getRowCount(Constants.Sheet_TestSuite)
             for i in range(1,testCaseCount):
-                testCaseId = ExcelUtil.ExcelUtil.getCellData(Constants.Constants.Sheet_TestSuite,i,Constants.Constants.Col_TestCaseID)
-                testCaseRunFlag = ExcelUtil.ExcelUtil.getCellData(Constants.Constants.Sheet_TestSuite,i,Constants.Constants.Col_RunFlag)
+                testCaseId = ExcelUtil.getCellData(Constants.Sheet_TestSuite,i,Constants.Col_TestCaseID)
+                testCaseRunFlag = ExcelUtil.getCellData(Constants.Sheet_TestSuite,i,Constants.Col_RunFlag)
                 if str(testCaseRunFlag).lower() == "y":
-                    Log.Log.startTestCase(testCaseId)
-                    testStep = ExcelUtil.ExcelUtil.getFirstRowContainsTestCaseId(Constants.Constants.Sheet_TestSteps,testCaseId,Constants.Constants.Col_TestCaseID)
-                    testLastStep = ExcelUtil.ExcelUtil.getTestCaseLastStepRow(Constants.Constants.Sheet_TestSteps,testCaseId,testStep)
+                    Log.startTestCase(testCaseId)
+                    TestSuiteByExcel.testResult = True
+                    testStep = ExcelUtil.getFirstRowContainsTestCaseId(Constants.Sheet_TestSteps,testCaseId,Constants.Col_TestCaseID)
+                    testLastStep = ExcelUtil.getTestCaseLastStepRow(Constants.Sheet_TestSteps,testCaseId,testStep)
                     for j in range(testStep,testLastStep):
-                         keyWord = ExcelUtil.ExcelUtil.getCellData(Constants.Constants.Sheet_TestSteps,j,Constants.Constants.Col_KeyWordAction)
-                         Log.Log.info("从excel读取的关键词为:%s" %(keyWord))
-                         value = ExcelUtil.ExcelUtil.getCellData(Constants.Constants.Sheet_TestSteps,j,Constants.Constants.Col_ActionValue)
-                         Log.Log.info("从excel读取的value为:%s" %(value))
-                         if hasattr(KeyWordsAction.KeyWordsAction,str(keyWord)):
-                            func = getattr(KeyWordsAction.KeyWordsAction,str(keyWord))
+                         keyWord = ExcelUtil.getCellData(Constants.Sheet_TestSteps,j,Constants.Col_KeyWordAction)
+                         Log.info("从excel读取的关键词为:%s" %(keyWord))
+                         value = ExcelUtil.getCellData(Constants.Sheet_TestSteps,j,Constants.Col_ActionValue)
+                         Log.info("从excel读取的value为:%s" %(value))
+                         locatorExpress = ExcelUtil.getCellData(Constants.Sheet_TestSteps,j,Constants.Col_locatorExpression)
+                         Log.info("从excel读取的locator为%s" %(locatorExpress))
+                         if hasattr(KeyWordsAction,str(keyWord)):
+                            func = getattr(KeyWordsAction,str(keyWord))
                             if(str(keyWord).startswith("assert")):
                                 func(self,value)
                             else:
-                                func(value)
+                                func(value,locatorExpress)
+                            if TestSuiteByExcel.testResult == False:
+                                #ExcelUtil.setCellData() 写入结果信息
+                                Log.endTestCase(testCaseId)
+                                break
                          else:
                             print '没有找到相应的方法'
-                         Log.Log.endTestCase(testCaseId)
+                    if TestSuiteByExcel.testResult == True:
+                         #ExcelUtil.setCellData() 写入结果信息
+                         Log.endTestCase(testCaseId)
+
         except Exception,e:
             AssertionError("执行失败")
             print str(e)

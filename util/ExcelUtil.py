@@ -13,6 +13,14 @@ class ExcelUtil():
     curRowNo = 1
 
     @staticmethod
+    def setExcelFileByPath(path):
+        try:
+            ExcelUtil.excelSheet = xlrd.open_workbook(unicode(path,"utf-8"))
+        except Exception,e:
+            print str(e)
+
+
+    @staticmethod
     def setExcelFile(path,sheetName):
         try:
             ExcelUtil.excelSheet = xlrd.open_workbook(unicode(path,"utf-8"))
@@ -128,8 +136,15 @@ class ExcelUtil():
             print str(e)
 
     @staticmethod
-    def setCellData(sheetName,rowNum,colNum,result):
-        pass
+    def setCellData(path,rowNum,colNum,result):
+        try:
+            oldWb = xlrd.open_workbook(path, formatting_info=True)
+            newWb = copy(oldWb)
+            nweWs = newWb.get_sheet(0)
+            nweWs.write(rowNum,colNum,unicode(result))
+            newWb.save(path)
+        except Exception,e:
+            print str(e)
 
 
 if __name__ == "__main__":
