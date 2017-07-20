@@ -1,6 +1,5 @@
 #-*- coding: utf-8 -*-
 
-print 'import Constants'
 
 class Constants():
     path_excelFile = "../data/dataDriver.xlsx"

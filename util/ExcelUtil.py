@@ -4,7 +4,6 @@ import xlrd
 import xlwt
 from xlutils.copy import copy
 
-print 'import ExcelUtil'
 
 class ExcelUtil():
     excelSheet = None

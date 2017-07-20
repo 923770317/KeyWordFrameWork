@@ -2,19 +2,22 @@
 import logging
 import logging.config
 
+
 class Log():
 
-    logger = logging.getLogger()
+
+
+    logger = logging.getLogger("errorlogger")
 
 
     @staticmethod
     def startTestCase(testCaseName):
-        Log.logger.info("----------------------\"",testCaseName," \"开始执行 ----------------------")
+        Log.logger.info("----------------------%s开始执行----------------------" %(testCaseName))
 
 
     @staticmethod
     def endTestCase(testCaseName):
-        Log.logger.info("----------------------\"",testCaseName," \"结束执行 ----------------------")
+        Log.logger.info("----------------------%s结束执行----------------------" %(testCaseName))
 
     @staticmethod
     def info(message):

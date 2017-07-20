@@ -5,14 +5,14 @@ import sys
 sys.path.append("\util")
 from util import Constants
 from util import ObjectMap
+from util import Log
 import logging
 
 
-print 'import KeyWord'
 
 class KeyWordsAction():
     objectMap = ObjectMap.ObjcetMap(Constants.Constants.path_configurationFile)
-
+    logging.config.fileConfig("../log.conf")
     driver = None
 
     @staticmethod
@@ -21,26 +21,26 @@ class KeyWordsAction():
             if str(browserName).lower() == "ie":
                 #或许还要指定驱动
                 KeyWordsAction.driver = webdriver.Ie()
-                KeyWordsAction.logger.info("IE 实例已经声明")
+                Log.Log.info("IE 实例已经声明")
             elif str(browserName).lower() == "chrome":
                 #或许还要指定驱动
                 KeyWordsAction.driver = webdriver.Chrome()
-                KeyWordsAction.logger.info("Chorme 实例已经声明")
+                Log.Log.info("Chorme 实例已经声明")
             elif str(browserName).lower() == "firefox":
                 #或许还要指定驱动
                 KeyWordsAction.driver = webdriver.Firefox()
-                KeyWordsAction.logger.info("Firefox 实例已经声明")
+                Log.Log.info("Firefox 实例已经声明")
         except Exception,e:
-            KeyWordsAction.logger.info("浏览器实例已经声明异常")
+            Log.Log.info("浏览器实例已经声明异常")
             print str(e)
 
     @staticmethod
     def navigate(url):
         try:
             KeyWordsAction.driver.get(url)
-            KeyWordsAction.logger.info("访问URL:",url)
+            Log.Log.info("访问URL:%s" %(url))
         except Exception,e:
-            KeyWordsAction.logger.info("访问URL:",url,"异常")
+            Log.Log.info("访问URL:%s异常" %(url))
             print str(e)
 
     @staticmethod
@@ -48,18 +48,18 @@ class KeyWordsAction():
         try:
             KeyWordsAction.driver.find_element(by=KeyWordsAction.objectMap.getLocator("baidu","mainPage.searchBox")[0],value=KeyWordsAction.objectMap.getLocator("baidu","mainPage.searchBox")[1]).clear()
             KeyWordsAction.driver.find_element(by=KeyWordsAction.objectMap.getLocator("baidu","mainPage.searchBox")[0],value=KeyWordsAction.objectMap.getLocator("baidu","mainPage.searchBox")[1]).send_keys(keyWord)
-            KeyWordsAction.logger.info("在输入框输入",keyWord)
+            Log.Log.info("在输入框输入%s" %(keyWord))
         except Exception,e:
-            KeyWordsAction.logger.info("在输入框输入",keyWord,"异常")
+            Log.Log.info("在输入框输入%s异常" %(keyWord))
             print str(e)
 
     @staticmethod
     def click_search(value):
         try:
             KeyWordsAction.driver.find_element(by=KeyWordsAction.objectMap.getLocator("baidu","homePage.sarchButton")[0],value=KeyWordsAction.objectMap.getLocator("baidu","homePage.sarchButton")[1]).click()
-            KeyWordsAction.logger.info("点击搜索按钮")
+            Log.Log.info("点击搜索按钮")
         except Exception,e:
-            KeyWordsAction.logger.info("点击搜索按钮异常")
+            Log.Log.info("点击搜索按钮异常")
             print str(e)
 
 
@@ -68,9 +68,9 @@ class KeyWordsAction():
         try:
             KeyWordsAction.driver.implicitly_wait(10)
             KeyWordsAction.driver.find_element(by=KeyWordsAction.objectMap.getLocator("baidu",elementExpress)[0],value=KeyWordsAction.objectMap.getLocator("baidu",elementExpress)[1])
-            KeyWordsAction.logger.info("智能等待")
+            Log.Log.info("智能等待")
         except Exception,e:
-            KeyWordsAction.logger.info("智能等待异常")
+            Log.Log.info("智能等待异常")
             print str(e)
 
     @staticmethod
@@ -84,9 +84,9 @@ class KeyWordsAction():
     def sleep(second):
         try:
             time.sleep(second)
-            KeyWordsAction.logger.info("睡觉",second,"秒")
+            Log.Log.info("睡觉%d秒" %(second))
         except Exception,e:
-            KeyWordsAction.logger.info("睡觉",second,"秒异常")
+            Log.Log.info("睡觉%d秒异常" %(second))
             print str(e)
 
 
@@ -94,9 +94,9 @@ class KeyWordsAction():
     def close_browser(value):
         try:
             KeyWordsAction.driver.quit()
-            KeyWordsAction.logger.info("关闭浏览器")
+            Log.Log.info("关闭浏览器")
         except Exception,e:
-            KeyWordsAction.logger.info("关闭浏览器y异常")
+            Log.Log.info("关闭浏览器y异常")
             print str(e)
 
 
