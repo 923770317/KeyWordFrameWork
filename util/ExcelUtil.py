@@ -127,6 +127,10 @@ class ExcelUtil():
         except Exception,e:
             print str(e)
 
+    @staticmethod
+    def setCellData(sheetName,rowNum,colNum,result):
+        pass
+
 
 if __name__ == "__main__":
     # codedetect = chardet.detect("百度测试数据.xls")["encoding"]
