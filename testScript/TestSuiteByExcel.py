@@ -70,5 +70,6 @@ class TestSuiteByExcel(unittest.TestCase):
                          Log.endTestCase(testCaseId)
 
         except Exception,e:
-            AssertionError("执行失败")
-            Log.info(str(e))
+            if (type(e) is AssertionError):
+                Log.info(str(e))
+                self.assertTrue(1==2)

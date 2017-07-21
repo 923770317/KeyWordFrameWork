@@ -118,11 +118,8 @@ class KeyWordsAction():
 
     @staticmethod
     def assertIn(testcase,assertString):
-        try:
-            testcase.assertTrue(assertString in KeyWordsAction.driver.page_source)
-        except AssertionError ,msg:
-            KeyWordsAction.testResult = False
-            print msg
+        testcase.assertTrue(assertString in KeyWordsAction.driver.page_source)
+
 
     @staticmethod
     def sleep(second,elementExpress):
