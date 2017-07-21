@@ -7,7 +7,7 @@ class Log():
 
 
 
-    logger = logging.getLogger("errorlogger")
+    logger = logging.getLogger("infoLogger")
 
 
     @staticmethod
